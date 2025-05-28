@@ -1,5 +1,5 @@
-import Image from "next/image";
+import Navbar from "./Navbar";
 
 export default function Home() {
-  return <main>Hello world</main>;
+  return <div>Hello world</div>;
 }
