@@ -1,7 +1,7 @@
 import React from "react";
 
-const IssuesPage = () => {
+const NewIssuePage = () => {
   return <div>page</div>;
 };
 
-export default IssuesPage;
+export default NewIssuePage;
