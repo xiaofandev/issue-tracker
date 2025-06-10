@@ -15,7 +15,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/app/component/ErrorMessage";
-import { IssueForm, IssueSchema } from "@/app/types/Type";
+import { IssueForm, IssueSchema } from "@/app/validation/validation";
 
 const NewIssuePage = () => {
   const {
