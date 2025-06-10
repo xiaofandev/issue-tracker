@@ -34,7 +34,9 @@ const NewIssuePage = () => {
 
   return (
     <div className="max-w-xl">
-      <ErrorMessage>{error}</ErrorMessage>
+      <Callout.Root color="red" className="mb-4">
+        <Callout.Text>{error}</Callout.Text>
+      </Callout.Root>
 
       <form
         onSubmit={handleSubmit(async (data) => {
