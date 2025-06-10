@@ -1,15 +1,13 @@
-import { Callout } from "@radix-ui/themes";
+import { Text } from "@radix-ui/themes";
 import React, { PropsWithChildren } from "react";
 
 const ErrorMessage = ({ children }: PropsWithChildren) => {
+  if (!children) return null;
+
   return (
-    <>
-      {children && (
-        <Callout.Root color="red">
-          <Callout.Text>{children}</Callout.Text>
-        </Callout.Root>
-      )}
-    </>
+    <Text color="red" as="p" className="py-2">
+      {children}
+    </Text>
   );
 };
 

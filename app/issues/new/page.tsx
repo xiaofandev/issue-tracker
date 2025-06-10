@@ -33,7 +33,7 @@ const NewIssuePage = () => {
   const [isSubmiting, setSubmiting] = useState<boolean>(false);
 
   return (
-    <div className="max-w-xl space-y-4">
+    <div className="max-w-xl">
       <ErrorMessage>{error}</ErrorMessage>
 
       <form
@@ -47,17 +47,24 @@ const NewIssuePage = () => {
             setSubmiting(false);
           }
         })}
-        className="space-y-4"
       >
-        <TextField.Root placeholder="Title" {...register("title")} />
-        <ErrorMessage>{errors.title?.message}</ErrorMessage>
+        <div className="space-y-4">
+          <div>
+            <TextField.Root placeholder="Title" {...register("title")} />
+            <ErrorMessage>{errors.title?.message}</ErrorMessage>
+          </div>
 
-        <TextArea placeholder="Description" {...register("description")} />
-        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+          <div>
+            <TextArea placeholder="Description" {...register("description")} />
+            <ErrorMessage>{errors.description?.message}</ErrorMessage>
+          </div>
 
-        <Button disabled={isSubmiting}>
-          New Issue{isSubmiting && <Spinner />}
-        </Button>
+          <div>
+            <Button disabled={isSubmiting}>
+              New Issue{isSubmiting && <Spinner />}
+            </Button>
+          </div>
+        </div>
       </form>
     </div>
   );
