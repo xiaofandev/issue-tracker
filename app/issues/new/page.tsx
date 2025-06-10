@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Error from "@/app/component/Error";
+import ErrorMessage from "@/app/component/ErrorMessage";
 import { IssueForm, IssueSchema } from "@/app/types/Type";
 
 const NewIssuePage = () => {
@@ -23,7 +23,7 @@ const NewIssuePage = () => {
 
   return (
     <div className="max-w-xl space-y-4">
-      <Error>{error}</Error>
+      <ErrorMessage>{error}</ErrorMessage>
 
       <form
         onSubmit={handleSubmit(async (data) => {
@@ -37,10 +37,10 @@ const NewIssuePage = () => {
         className="space-y-4"
       >
         <TextField.Root placeholder="Title" {...register("title")} />
-        <Error>{errors.title?.message}</Error>
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
         <TextArea placeholder="Description" {...register("description")} />
-        <Error>{errors.description?.message}</Error>
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
         <Button>New Issue</Button>
       </form>

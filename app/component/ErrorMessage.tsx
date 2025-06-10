@@ -1,7 +1,7 @@
 import { Callout } from "@radix-ui/themes";
 import React, { PropsWithChildren } from "react";
 
-const Error = ({ children }: PropsWithChildren) => {
+const ErrorMessage = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children && (
@@ -13,4 +13,4 @@ const Error = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default Error;
+export default ErrorMessage;
