@@ -7,13 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateIssueSchema } from "@/app/api/issues/route";
 import Error from "@/app/component/Error";
-
-interface IssueForm {
-  title: string;
-  description: string;
-}
+import { IssueForm, IssueSchema } from "@/app/types/Type";
 
 const NewIssuePage = () => {
   const {
@@ -21,7 +16,7 @@ const NewIssuePage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueForm>({
-    resolver: zodResolver(CreateIssueSchema),
+    resolver: zodResolver(IssueSchema),
   });
   const router = useRouter();
   const [error, setError] = useState<string | null>();
