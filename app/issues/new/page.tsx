@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateIssueSchema } from "@/app/api/issues/route";
+import Error from "@/app/component/Error";
 
 interface IssueForm {
   title: string;
@@ -27,17 +28,13 @@ const NewIssuePage = () => {
 
   return (
     <div className="max-w-xl space-y-4">
-      {error && (
-        <Callout.Root color="red">
-          <Callout.Text>{error}</Callout.Text>
-        </Callout.Root>
-      )}
+      <Error>{error}</Error>
 
       <form
         onSubmit={handleSubmit(async (data) => {
           try {
             await axios.post("/api/issues", data);
-            router.push("/issues");
+            router.push("/");
           } catch (error) {
             setError("Something went wrong");
           }
@@ -45,19 +42,11 @@ const NewIssuePage = () => {
         className="space-y-4"
       >
         <TextField.Root placeholder="Title" {...register("title")} />
-
-        {errors.title && (
-          <Callout.Root color="red">
-            <Callout.Text>{errors.title.message}</Callout.Text>
-          </Callout.Root>
-        )}
+        <Error>{errors.title?.message}</Error>
 
         <TextArea placeholder="Description" {...register("description")} />
-        {errors.description && (
-          <Callout.Root color="red">
-            <Callout.Text>{errors.description.message}</Callout.Text>
-          </Callout.Root>
-        )}
+        <Error>{errors.description?.message}</Error>
+
         <Button>New Issue</Button>
       </form>
     </div>
