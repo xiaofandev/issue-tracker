@@ -1,6 +1,13 @@
 "use client";
 
-import { Button, Callout, Link, TextArea, TextField } from "@radix-ui/themes";
+import {
+  Button,
+  Callout,
+  Link,
+  Spinner,
+  TextArea,
+  TextField,
+} from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
@@ -20,6 +27,7 @@ const NewIssuePage = () => {
   });
   const router = useRouter();
   const [error, setError] = useState<string | null>();
+  const [isSubmiting, setSubmiting] = useState<boolean>(false);
 
   return (
     <div className="max-w-xl space-y-4">
@@ -28,10 +36,12 @@ const NewIssuePage = () => {
       <form
         onSubmit={handleSubmit(async (data) => {
           try {
+            setSubmiting(true);
             await axios.post("/api/issues", data);
             router.push("/");
           } catch (error) {
             setError("Something went wrong");
+            setSubmiting(false);
           }
         })}
         className="space-y-4"
@@ -42,7 +52,9 @@ const NewIssuePage = () => {
         <TextArea placeholder="Description" {...register("description")} />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
-        <Button>New Issue</Button>
+        <Button disabled={isSubmiting}>
+          New Issue{isSubmiting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
