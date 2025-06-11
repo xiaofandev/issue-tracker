@@ -31,6 +31,16 @@ const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>();
   const [isSubmiting, setSubmiting] = useState<boolean>(false);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setSubmiting(true);
+      await axios.post("/api/issues", data);
+      router.push("/");
+    } catch (error) {
+      setError("Something went wrong");
+      setSubmiting(false);
+    }
+  });
 
   return (
     <div className="max-w-xl">
@@ -38,18 +48,7 @@ const NewIssuePage = () => {
         <Callout.Text>{error}</Callout.Text>
       </Callout.Root>
 
-      <form
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setSubmiting(true);
-            await axios.post("/api/issues", data);
-            router.push("/");
-          } catch (error) {
-            setError("Something went wrong");
-            setSubmiting(false);
-          }
-        })}
-      >
+      <form onSubmit={onSubmit}>
         <div className="space-y-4">
           <div>
             <TextField.Root placeholder="Title" {...register("title")} />
