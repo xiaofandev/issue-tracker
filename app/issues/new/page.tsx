@@ -44,9 +44,11 @@ const NewIssuePage = () => {
 
   return (
     <div className="max-w-xl">
-      <Callout.Root color="red" className="mb-4">
-        <Callout.Text>{error}</Callout.Text>
-      </Callout.Root>
+      {error && (
+        <Callout.Root color="red" className="mb-4">
+          <Callout.Text>{error}</Callout.Text>
+        </Callout.Root>
+      )}
 
       <form onSubmit={onSubmit}>
         <div className="space-y-4">
