@@ -1,8 +1,5 @@
 "use client";
 
-import ErrorMessage from "@/app/component/ErrorMessage";
-import { IssueSchema } from "@/app/validation/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Callout,
@@ -15,11 +12,14 @@ import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import ErrorMessage from "@/app/component/ErrorMessage";
+import { IssueSchema } from "@/app/validation/schema";
 import z from "zod";
 
 type IssueForm = z.infer<typeof IssueSchema>;
 
-const NewIssuePage = async () => {
+const NewIssuePage = () => {
   const {
     register,
     handleSubmit,
