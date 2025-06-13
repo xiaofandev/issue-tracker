@@ -18,8 +18,6 @@ const IssueDetailsPage = async ({ params }: Props) => {
     notFound();
   }
 
-  await delay(3000);
-
   return (
     <div className="space-y-4 max-w-xl">
       <div>
