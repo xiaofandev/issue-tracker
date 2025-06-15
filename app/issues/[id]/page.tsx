@@ -1,15 +1,14 @@
-import StatusBadge from "@/app/component/StatusBadge";
 import prisma from "@/prisma/client";
-import { Box, Button, Card, Grid, Heading, Text } from "@radix-ui/themes";
+import { Box, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
-import React from "react";
 import EditButton from "./EditButton";
 import IssueDetails from "./IssueDetails";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
-const IssueDetailsPage = async ({ params }: Props) => {
+const IssueDetailsPage = async (props: Props) => {
+  const params = await props.params;
   const issue = await prisma.issue.findUnique({
     where: {
       id: Number(params.id),
