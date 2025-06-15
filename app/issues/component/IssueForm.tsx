@@ -3,6 +3,7 @@
 import ErrorMessage from "@/app/component/ErrorMessage";
 import { IssueSchema } from "@/app/validation/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Issue } from "@prisma/client";
 import {
   Callout,
   TextField,
