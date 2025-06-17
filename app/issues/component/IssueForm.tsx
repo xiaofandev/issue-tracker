@@ -25,6 +25,10 @@ const IssueForm = ({ issue }: { issue?: IssueFormData }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
+    defaultValues: {
+      title: issue?.title,
+      description: issue?.description,
+    },
     resolver: zodResolver(IssueSchema),
   });
   const router = useRouter();
@@ -59,20 +63,12 @@ const IssueForm = ({ issue }: { issue?: IssueFormData }) => {
       <form onSubmit={onSubmit}>
         <div className="space-y-4">
           <div>
-            <TextField.Root
-              placeholder="Title"
-              {...register("title")}
-              value={issue?.title}
-            />
+            <TextField.Root placeholder="Title" {...register("title")} />
             <ErrorMessage>{errors.title?.message}</ErrorMessage>
           </div>
 
           <div>
-            <TextArea
-              placeholder="Description"
-              {...register("description")}
-              value={issue?.description}
-            />
+            <TextArea placeholder="Description" {...register("description")} />
             <ErrorMessage>{errors.description?.message}</ErrorMessage>
           </div>
 
