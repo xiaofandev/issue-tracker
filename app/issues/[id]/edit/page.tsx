@@ -4,9 +4,12 @@ import IssueForm from "../../component/IssueForm";
 import { notFound } from "next/navigation";
 import { Issue } from "@prisma/client";
 
-const page = async ({ params }: { params: { id: string } }) => {
+type Params = Promise<{ id: string }>;
+
+const page = async ({ params }: { params: Params }) => {
+  const { id } = await params;
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   });
   if (!issue) return notFound();
 
