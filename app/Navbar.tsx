@@ -1,8 +1,10 @@
 "use client";
+
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 
 const Navbar = () => {
   const links = [
@@ -16,7 +18,8 @@ const Navbar = () => {
     },
   ];
   const currentPath = usePathname();
-  console.log(currentPath);
+  const { data: session } = useSession();
+
   return (
     <nav className="flex space-x-8 border-b border-b-gray-400 mb-4 px-4 h-12 items-center">
       <Link href="/">
@@ -38,6 +41,8 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
+
+      {session?.user?.email}
     </nav>
   );
 };
