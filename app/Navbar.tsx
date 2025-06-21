@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
 import { useSession } from "next-auth/react";
-import { Avatar, Box, DropdownMenu, Flex } from "@radix-ui/themes";
+import { Avatar, Box, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 import { Skeleton } from "./component/Skeleton";
 
 const Navbar = () => {
@@ -69,8 +69,8 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status == "loading") {
-    return null;
+  if (status === "loading") {
+    return <Skeleton width={40} height={20} />;
   }
 
   if (status === "unauthenticated") {
