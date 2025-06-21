@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaBug } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import { Avatar, DropdownMenu } from "@radix-ui/themes";
 
 const Navbar = () => {
   const links = [
@@ -41,8 +42,26 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
-
-      {session?.user?.email}
+      {session && (
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <Avatar
+              src={session?.user?.image!}
+              radius="full"
+              fallback="?"
+              size="2"
+              className="hover:cursor-pointer"
+            />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Label>{session.user?.name}</DropdownMenu.Label>
+            <DropdownMenu.Item>
+              <Link href="/api/auth/signout">Logout</Link>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      )}
+      {!session && <Link href="/api/auth/signin">Login</Link>}
     </nav>
   );
 };
