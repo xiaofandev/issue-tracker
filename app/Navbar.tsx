@@ -36,6 +36,7 @@ const Logo = () => {
 
 const NavLinks = () => {
   const currentPath = usePathname();
+
   const links = [
     {
       label: "Dashboard",
@@ -53,9 +54,8 @@ const NavLinks = () => {
           <Link
             href={link.href}
             className={classNames({
-              "text-zinc-500": currentPath != link.href,
-              "hover:text-zinc-800 transition-colors": true,
-              "text-zinc-900": currentPath == link.href,
+              "nav-link": true,
+              "!text-zinc-900": link.href === currentPath,
             })}
           >
             {link.label}
@@ -74,7 +74,11 @@ const AuthStatus = () => {
   }
 
   if (status === "unauthenticated") {
-    return <Link href="/api/auth/signin">Login</Link>;
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        Login
+      </Link>
+    );
   }
 
   if (status === "authenticated") {
