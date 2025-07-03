@@ -24,22 +24,24 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
     fetchUsers();
   }, []);
 
+  const onChangeAssignToUser = (userId: string) => {
+    axios
+      .patch("/api/issues/" + issueId, {
+        assignToUser: userId == "unassigned" ? null : userId,
+      })
+      .then(() => {
+        toast.success("Changes has been saved");
+      })
+      .catch(() => {
+        toast.error("Changes can not be saved");
+      });
+  };
+
   return (
     <>
       <Select.Root
         defaultValue={assignToUser || ""}
-        onValueChange={(userId) => {
-          axios
-            .patch("/api/issues/" + issueId, {
-              assignToUser: userId == "unassigned" ? null : userId,
-            })
-            .then(() => {
-              toast.success("Changes has been saved");
-            })
-            .catch(() => {
-              toast.error("Changes can not be saved");
-            });
-        }}
+        onValueChange={onChangeAssignToUser}
       >
         <Select.Trigger placeholder="Assign to User:" />
         <Select.Content>
