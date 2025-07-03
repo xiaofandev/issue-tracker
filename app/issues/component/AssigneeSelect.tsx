@@ -49,7 +49,9 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
             <Select.Label>Suggections</Select.Label>
             <Select.Item value="unassigned">Unassigned</Select.Item>
             {users.map((user) => (
-              <Select.Item value={user.id}>{user.name}</Select.Item>
+              <Select.Item key={user.id} value={user.id}>
+                {user.name}
+              </Select.Item>
             ))}
           </Select.Group>
         </Select.Content>
