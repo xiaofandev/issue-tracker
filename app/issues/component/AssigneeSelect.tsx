@@ -26,12 +26,12 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
 
   return (
     <Select.Root
-      defaultValue={assignToUser ? assignToUser : ""}
+      defaultValue={assignToUser || ""}
       onValueChange={(value) => {
         try {
           axios.patch("/api/issues/" + issueId, {
             id: issueId,
-            assignToUser: value,
+            assignToUser: value == "unassigned" ? null : value,
           });
         } catch (e) {
           setError("Assign to user has failed");
@@ -42,6 +42,7 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
       <Select.Content>
         <Select.Group>
           <Select.Label>Suggections</Select.Label>
+          <Select.Item value="unassigned">Unassigned</Select.Item>
           {users.map((user) => (
             <Select.Item value={user.id}>{user.name}</Select.Item>
           ))}

@@ -18,6 +18,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: "Please sign in" }, { status: 401 });
 
   const issue = await request.json();
+  const { id, title, description, assignToUser } = issue;
 
   // Check if the form data is valid
   const validation = PatchIssueSchema.safeParse(issue);
@@ -27,7 +28,7 @@ export async function PATCH(request: NextRequest) {
 
   // Check if the issue exists
   const issueFromDatabase = await prisma.issue.findUnique({
-    where: { id: issue.id },
+    where: { id },
   });
   if (!issueFromDatabase)
     return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
@@ -43,11 +44,11 @@ export async function PATCH(request: NextRequest) {
 
   // Do update the issue info
   const updatedIssue = await prisma.issue.update({
-    where: { id: issue.id },
+    where: { id },
     data: {
-      title: issue.title,
-      description: issue.description,
-      assignToUser: issue.assignToUser,
+      title,
+      description,
+      assignToUser,
     },
   });
 
