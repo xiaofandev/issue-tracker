@@ -29,7 +29,10 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
       defaultValue={assignToUser ? assignToUser : ""}
       onValueChange={(value) => {
         try {
-          axios.patch("/api/issues/" + issueId, { assignToUser: value });
+          axios.patch("/api/issues/" + issueId, {
+            id: issueId,
+            assignToUser: value,
+          });
         } catch (e) {
           setError("Assign to user has failed");
         }
