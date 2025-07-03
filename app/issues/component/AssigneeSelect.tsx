@@ -30,7 +30,6 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
       onValueChange={(value) => {
         try {
           axios.patch("/api/issues/" + issueId, {
-            id: issueId,
             assignToUser: value == "unassigned" ? null : value,
           });
         } catch (e) {

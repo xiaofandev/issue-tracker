@@ -16,23 +16,27 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 
 export const IssueSchema = z.object({
-  id: z.number(),
   title: z.string().min(1),
   description: z.string().min(1),
 });
 
 type PatchIssueFormData = z.infer<typeof IssueSchema>;
 
-const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
+const IssueForm = ({
+  issueId,
+  data,
+}: {
+  issueId: string;
+  data: PatchIssueFormData;
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<PatchIssueFormData>({
     defaultValues: {
-      id: issue.id,
-      title: issue.title,
-      description: issue.description,
+      title: data.title,
+      description: data.description,
     },
     resolver: zodResolver(IssueSchema),
   });
@@ -44,7 +48,7 @@ const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
     try {
       setSubmiting(true);
 
-      await axios.patch("/api/issues/" + issue.id, data);
+      await axios.patch("/api/issues/" + issueId, data);
 
       router.push("/issues");
     } catch (error) {
@@ -62,6 +66,7 @@ const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
       )}
 
       <form onSubmit={onSubmit}>
+        {error}
         <div className="space-y-4">
           <div>
             <TextField.Root placeholder="Title" {...register("title")} />

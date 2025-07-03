@@ -7,12 +7,12 @@ type Params = Promise<{ id: string }>;
 
 const page = async ({ params }: { params: Params }) => {
   const { id } = await params;
-  const issue = await prisma.issue.findUnique({
+  const data = await prisma.issue.findUnique({
     where: { id: parseInt(id) },
   });
-  if (!issue) return notFound();
+  if (!data) return notFound();
 
-  return <PatchIssueForm issue={issue} />;
+  return <PatchIssueForm issueId={id} data={data} />;
 };
 
 export default page;

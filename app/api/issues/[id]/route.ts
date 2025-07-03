@@ -5,20 +5,24 @@ import z from "zod";
 import { authOptions } from "../../config/authConfig";
 
 const PatchIssueSchema = z.object({
-  id: z.number(),
   title: z.string().min(1).optional(),
   description: z.string().min(1).optional(),
   assignToUser: z.string().optional().nullable(),
 });
 
-export async function PATCH(request: NextRequest) {
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   // Check auth
-  const session = await getServerSession(authOptions);
-  if (!session)
-    return NextResponse.json({ error: "Please sign in" }, { status: 401 });
+  // const session = await getServerSession(authOptions);
+  // if (!session)
+  //   return NextResponse.json({ error: "Please sign in" }, { status: 401 });
+
+  const id = params.id;
 
   const issue = await request.json();
-  const { id, title, description, assignToUser } = issue;
+  const { title, description, assignToUser } = issue;
 
   // Check if the form data is valid
   const validation = PatchIssueSchema.safeParse(issue);
@@ -28,7 +32,7 @@ export async function PATCH(request: NextRequest) {
 
   // Check if the issue exists
   const issueFromDatabase = await prisma.issue.findUnique({
-    where: { id },
+    where: { id: parseInt(id) },
   });
   if (!issueFromDatabase)
     return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
@@ -44,7 +48,7 @@ export async function PATCH(request: NextRequest) {
 
   // Do update the issue info
   const updatedIssue = await prisma.issue.update({
-    where: { id },
+    where: { id: parseInt(id) },
     data: {
       title,
       description,
