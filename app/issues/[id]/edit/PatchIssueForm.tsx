@@ -29,6 +29,11 @@ const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<PatchIssueFormData>({
+    defaultValues: {
+      id: issue.id,
+      title: issue.title,
+      description: issue.description,
+    },
     resolver: zodResolver(IssueSchema),
   });
   const router = useRouter();
@@ -39,7 +44,7 @@ const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
     try {
       setSubmiting(true);
 
-      await axios.post("/api/issues/" + issue.id, data);
+      await axios.patch("/api/issues/" + issue.id, data);
 
       router.push("/issues");
     } catch (error) {
@@ -70,7 +75,7 @@ const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
 
           <div>
             <Button disabled={isSubmiting}>
-              Create
+              Update
               {isSubmiting && <Spinner />}
             </Button>
           </div>
