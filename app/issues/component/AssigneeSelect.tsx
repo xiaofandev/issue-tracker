@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 interface Props {
   issueId: number;
@@ -12,7 +13,6 @@ interface Props {
 
 const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
   const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<String>();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -25,29 +25,35 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
   }, []);
 
   return (
-    <Select.Root
-      defaultValue={assignToUser || ""}
-      onValueChange={(value) => {
-        try {
-          axios.patch("/api/issues/" + issueId, {
-            assignToUser: value == "unassigned" ? null : value,
-          });
-        } catch (e) {
-          setError("Assign to user has failed");
-        }
-      }}
-    >
-      <Select.Trigger placeholder="Assign to User:" />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggections</Select.Label>
-          <Select.Item value="unassigned">Unassigned</Select.Item>
-          {users.map((user) => (
-            <Select.Item value={user.id}>{user.name}</Select.Item>
-          ))}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Select.Root
+        defaultValue={assignToUser || ""}
+        onValueChange={(userId) => {
+          axios
+            .patch("/api/issues/" + issueId, {
+              assignToUser: userId == "unassigned" ? null : userId,
+            })
+            .then(() => {
+              toast.success("Changes has been saved");
+            })
+            .catch(() => {
+              toast.error("Changes can not be saved");
+            });
+        }}
+      >
+        <Select.Trigger placeholder="Assign to User:" />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggections</Select.Label>
+            <Select.Item value="unassigned">Unassigned</Select.Item>
+            {users.map((user) => (
+              <Select.Item value={user.id}>{user.name}</Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <Toaster />
+    </>
   );
 };
 
