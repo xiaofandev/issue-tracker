@@ -16,7 +16,7 @@ export async function PATCH(request: NextRequest) {
     where: { id: issue.id },
   });
   if (!issueFromDatabase)
-    return NextResponse.json({ error: "Issue not found" }, { status: 404 });
+    return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
 
   // Check if the assignee user exists
   if (issue.assignToUser) {
@@ -24,7 +24,7 @@ export async function PATCH(request: NextRequest) {
       where: { id: issue.assignToUser },
     });
     if (!userFromDatabase)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "Invalid user" }, { status: 404 });
   }
 
   // Do update the issue info
