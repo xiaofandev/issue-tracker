@@ -1,6 +1,8 @@
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
+import { authOptions } from "../../config/authConfig";
 
 const PatchIssueSchema = z.object({
   id: z.number(),
@@ -10,6 +12,11 @@ const PatchIssueSchema = z.object({
 });
 
 export async function PATCH(request: NextRequest) {
+  // Check auth
+  const session = await getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json({ error: "Please sign in" }, { status: 401 });
+
   const issue = await request.json();
 
   // Check if the form data is valid
@@ -51,6 +58,11 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  // Check auth
+  const session = await getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json({ error: "Please sign in" }, { status: 401 });
+
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(params.id) },
   });
