@@ -1,6 +1,13 @@
-import { PatchIssueSchema } from "@/app/validation/schema";
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import z from "zod";
+
+const PatchIssueSchema = z.object({
+  id: z.number(),
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  assignToUser: z.string().optional().nullable(),
+});
 
 export async function PATCH(request: NextRequest) {
   const issue = await request.json();

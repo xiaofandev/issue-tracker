@@ -5,8 +5,14 @@ import { Select } from "@radix-ui/themes";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const AssigneeSelect = () => {
+interface Props {
+  issueId: number;
+  assignToUser?: string | null;
+}
+
+const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
   const [users, setUsers] = useState<User[]>([]);
+  const [error, setError] = useState<String>();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -16,11 +22,19 @@ const AssigneeSelect = () => {
       setUsers(users);
     };
     fetchUsers();
-    console.log(users);
   }, []);
 
   return (
-    <Select.Root defaultValue="">
+    <Select.Root
+      defaultValue={assignToUser ? assignToUser : ""}
+      onValueChange={(value) => {
+        try {
+          axios.patch("/api/issues/" + issueId, { assignToUser: value });
+        } catch (e) {
+          setError("Assign to user has failed");
+        }
+      }}
+    >
       <Select.Trigger placeholder="Assign to User:" />
       <Select.Content>
         <Select.Group>

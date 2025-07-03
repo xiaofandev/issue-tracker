@@ -1,12 +1,12 @@
 "use client";
-import { IssueSchema } from "@/app/validation/schema";
+import { NewIssueSchema } from "@/app/validation/schema";
 import z from "zod";
-import IssueForm from "../component/IssueForm";
+import NewIssueForm from "./NewIssueForm";
 
-type IssueForm = z.infer<typeof IssueSchema>;
+type IssueForm = z.infer<typeof NewIssueSchema>;
 
 const NewIssuePage = () => {
-  return <IssueForm />;
+  return <NewIssueForm />;
 };
 
 export default NewIssuePage;

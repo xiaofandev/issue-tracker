@@ -1,9 +1,7 @@
 "use client";
 
 import ErrorMessage from "@/app/component/ErrorMessage";
-import { IssueSchema } from "@/app/validation/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Issue } from "@prisma/client";
 import {
   Callout,
   TextField,
@@ -17,18 +15,20 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 
-type IssueFormData = z.infer<typeof IssueSchema>;
+export const IssueSchema = z.object({
+  id: z.number(),
+  title: z.string().min(1),
+  description: z.string().min(1),
+});
 
-const IssueForm = ({ issue }: { issue?: IssueFormData }) => {
+type PatchIssueFormData = z.infer<typeof IssueSchema>;
+
+const IssueForm = ({ issue }: { issue: PatchIssueFormData }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IssueFormData>({
-    defaultValues: {
-      title: issue?.title,
-      description: issue?.description,
-    },
+  } = useForm<PatchIssueFormData>({
     resolver: zodResolver(IssueSchema),
   });
   const router = useRouter();
@@ -39,11 +39,7 @@ const IssueForm = ({ issue }: { issue?: IssueFormData }) => {
     try {
       setSubmiting(true);
 
-      if (issue) {
-        await axios.patch(`/api/issues/${issue.id}`, data);
-      } else {
-        await axios.post("/api/issues", data);
-      }
+      await axios.post("/api/issues/" + issue.id, data);
 
       router.push("/issues");
     } catch (error) {
@@ -74,7 +70,7 @@ const IssueForm = ({ issue }: { issue?: IssueFormData }) => {
 
           <div>
             <Button disabled={isSubmiting}>
-              {issue ? "Update" : "Create"}
+              Create
               {isSubmiting && <Spinner />}
             </Button>
           </div>
