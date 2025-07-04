@@ -2,9 +2,11 @@
 
 import { User } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import { Skeleton } from "@/app/component/Skeleton";
 
 interface Props {
   issueId: number;
@@ -12,19 +14,16 @@ interface Props {
 }
 
 const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
-  const [users, setUsers] = useState<User[]>([]);
+  const { data: users, isFetching } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => axios.get<User[]>("/api/users").then((resp) => resp.data),
+    staleTime: 10 * 60 * 1000,
+    retry: 3,
+  });
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const users = await axios
-        .get<User[]>("/api/users")
-        .then((resp) => resp.data);
-      setUsers(users);
-    };
-    fetchUsers();
-  }, []);
+  if (isFetching) return <Skeleton />;
 
-  const onChangeAssignToUser = (userId: string) => {
+  const assignIssue = (userId: string) => {
     axios
       .patch("/api/issues/" + issueId, {
         assignToUser: userId == "unassigned" ? null : userId,
@@ -41,18 +40,19 @@ const AssigneeSelect = ({ issueId, assignToUser }: Props) => {
     <>
       <Select.Root
         defaultValue={assignToUser || ""}
-        onValueChange={onChangeAssignToUser}
+        onValueChange={assignIssue}
       >
         <Select.Trigger placeholder="Assign to User:" />
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggections</Select.Label>
             <Select.Item value="unassigned">Unassigned</Select.Item>
-            {users.map((user) => (
-              <Select.Item key={user.id} value={user.id}>
-                {user.name}
-              </Select.Item>
-            ))}
+            {users &&
+              users.map((user) => (
+                <Select.Item key={user.id} value={user.id}>
+                  {user.name}
+                </Select.Item>
+              ))}
           </Select.Group>
         </Select.Content>
       </Select.Root>
