@@ -65,9 +65,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
               <Table.RowHeaderCell>
-                <NextLink href={`/issues/${issue.id}`} legacyBehavior>
-                  <RadixLink>{issue.title}</RadixLink>
-                </NextLink>
+                <NextLink href={`/issues/${issue.id}`}>{issue.title}</NextLink>
               </Table.RowHeaderCell>
               <Table.Cell>
                 <StatusBadge status={issue.status}></StatusBadge>
