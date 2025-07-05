@@ -1,5 +1,5 @@
-import Navbar from "./Navbar";
+import Pagination from "./component/Pagination";
 
 export default function Home() {
-  return <div>Hello world</div>;
+  return <Pagination />;
 }
