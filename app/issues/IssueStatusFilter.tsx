@@ -26,7 +26,8 @@ const IssueStatusFilter = () => {
         } else {
           params.set("status", status);
         }
-        router.push("/issues?" + params.toString());
+        const query = params.size ? "?" + params.toString() : "";
+        router.push("/issues" + query);
       }}
       defaultValue={searchParams.get("status") || ""}
     >
