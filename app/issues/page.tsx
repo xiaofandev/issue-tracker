@@ -32,7 +32,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
   const issueCount = await prisma.issue.count({ where: { status } });
 
   return (
-    <Flex direction="column" gap="2">
+    <Flex direction="column" gap="3">
       <IssueActions />
       <IssuesTable issues={issues} searchParams={searchParams} />
       <Pagination
