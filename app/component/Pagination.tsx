@@ -23,7 +23,7 @@ const Pagination = ({ totalCount, pageSize, currentPage }: Props) => {
   const changePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", page.toString());
-    router.push("/?" + params.toString());
+    router.push("/issues?" + params.toString());
   };
   return (
     <Flex align="center" gap="2">
