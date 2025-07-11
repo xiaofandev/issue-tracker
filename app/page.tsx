@@ -1,4 +1,5 @@
 import Pagination from "./component/Pagination";
+import LatestIssues from "./LatestIssues";
 
 export default async function Home({
   searchParams,
@@ -6,7 +7,5 @@ export default async function Home({
   searchParams: { page: number };
 }) {
   const params = await searchParams;
-  return (
-    <Pagination totalCount={100} currentPage={params.page || 1} pageSize={10} />
-  );
+  return <LatestIssues />;
 }
