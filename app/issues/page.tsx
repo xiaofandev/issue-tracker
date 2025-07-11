@@ -21,7 +21,13 @@ const IssuesPage = async ({ searchParams }: Props) => {
     : undefined;
 
   const pageSize = 10;
-  const page = parseInt(params.page) <= 0 ? 1 : parseInt(params.page);
+
+  let page = 1;
+  // page参数不存在，或page参数小于等于0或不为数字的情况，取默认值1
+  if (params.page && parseInt(params.page) > 1) {
+    page = parseInt(params.page);
+  }
+
   const issues = await prisma.issue.findMany({
     where,
     orderBy,
