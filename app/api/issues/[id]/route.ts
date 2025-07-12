@@ -12,14 +12,14 @@ const PatchIssueSchema = z.object({
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   // Check auth
   // const session = await getServerSession(authOptions);
   // if (!session)
   //   return NextResponse.json({ error: "Please sign in" }, { status: 401 });
 
-  const id = params.id;
+  const id = parseInt((await params).id);
 
   const issue = await request.json();
   const { title, description, assignToUser } = issue;
@@ -32,7 +32,7 @@ export async function PATCH(
 
   // Check if the issue exists
   const issueFromDatabase = await prisma.issue.findUnique({
-    where: { id: parseInt(id) },
+    where: { id },
   });
   if (!issueFromDatabase)
     return NextResponse.json({ error: "Invalid issue" }, { status: 404 });
@@ -48,7 +48,7 @@ export async function PATCH(
 
   // Do update the issue info
   const updatedIssue = await prisma.issue.update({
-    where: { id: parseInt(id) },
+    where: { id },
     data: {
       title,
       description,
@@ -61,20 +61,22 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = parseInt((await params).id);
+
   // Check auth
   const session = await getServerSession(authOptions);
   if (!session)
     return NextResponse.json({ error: "Please sign in" }, { status: 401 });
 
   const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id },
   });
   if (!issue)
     return NextResponse.json({ error: "Issue not found" }, { status: 404 });
 
-  await prisma.issue.delete({ where: { id: parseInt(params.id) } });
+  await prisma.issue.delete({ where: { id } });
 
   return NextResponse.json({});
 }

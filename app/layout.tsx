@@ -7,6 +7,7 @@ import Navbar from "./Navbar";
 import "./theme-config.css";
 import AuthProvider from "./component/AuthProvider";
 import ReactQueryClientProvider from "./ReactQueryClientProvider";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({
           <AuthProvider>
             <Theme>
               <Navbar />
-              <main className="p-5">{children}</main>
+              <Suspense>
+                <main className="p-5">{children}</main>
+              </Suspense>
             </Theme>
           </AuthProvider>
         </ReactQueryClientProvider>
