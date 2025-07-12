@@ -12,8 +12,8 @@ export default async function Home() {
   });
 
   return (
-    <Grid columns={{ initial: "1", md: "2" }} gap="4">
-      <Flex direction="column" gap="4">
+    <Grid columns={{ initial: "1", md: "2" }} gap="6">
+      <Flex direction="column" gap="6">
         <IssueSummary open={open} closed={closed} inProgress={inProgress} />
         <LatestIssues />
       </Flex>
