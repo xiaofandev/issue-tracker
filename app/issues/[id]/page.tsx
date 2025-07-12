@@ -5,18 +5,23 @@ import EditButton from "./EditButton";
 import IssueDetails from "./IssueDetails";
 import DeleteButton from "./DeleteButton";
 import AssigneeSelect from "./AssigneeSelect";
-import { Description } from "@radix-ui/themes/components/alert-dialog";
+import { cache } from "react";
 
 interface Props {
   params: Promise<{ id: string }>;
 }
+
+const fetchIssueById = cache((id: number) =>
+  prisma.issue.findUnique({
+    where: {
+      id,
+    },
+  })
+);
+
 const IssueDetailsPage = async (props: Props) => {
   const params = await props.params;
-  const issue = await prisma.issue.findUnique({
-    where: {
-      id: Number(params.id),
-    },
-  });
+  const issue = await fetchIssueById(Number(params.id));
   if (!issue) {
     notFound();
   }
@@ -39,9 +44,7 @@ export default IssueDetailsPage;
 
 export async function generateMetadata(props: Props) {
   const params = await props.params;
-  const issue = await prisma.issue.findUnique({
-    where: { id: Number(params.id) },
-  });
+  const issue = await fetchIssueById(Number(params.id));
   return {
     title: issue!.title,
     description: "Description of issue " + issue!.id,
