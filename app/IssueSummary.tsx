@@ -39,14 +39,14 @@ const IssueSummary = ({ open, closed, inProgress }: Props) => {
   return (
     <Flex gap="2">
       {statuses.map((status) => (
-        <Card key={status.value} className={`bg-${status.color}`}>
-          <Flex direction="column" gap="2">
-            <Link className="text-lg" href={`/issues?status=${status.value}`}>
+        <Link className="text-lg" href={`/issues?status=${status.value}`}>
+          <Card key={status.value} className={`bg-${status.color}`}>
+            <Flex direction="column" gap="2">
               {status.label}
-            </Link>
-            <Text className="text-xl font-bold">{status.count}</Text>
-          </Flex>
-        </Card>
+              <Text className="text-xl font-bold">{status.count}</Text>
+            </Flex>
+          </Card>
+        </Link>
       ))}
     </Flex>
   );
