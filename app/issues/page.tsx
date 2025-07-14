@@ -7,8 +7,15 @@ import IssuesTable, { columns } from "./IssuesTable";
 import { Flex } from "@radix-ui/themes";
 import { Metadata } from "next";
 
+export type Sort = "asc" | "desc";
+
 interface Props {
-  searchParams: Promise<{ status: Status; orderBy: keyof Issue; page: string }>;
+  searchParams: Promise<{
+    status: Status;
+    orderBy: keyof Issue;
+    sort: Sort;
+    page: string;
+  }>;
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
@@ -18,7 +25,7 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
   const where = status ? { status } : undefined;
   const orderBy = columns.map((column) => column.value).includes(params.orderBy)
-    ? { [params.orderBy]: "asc" }
+    ? { [params.orderBy]: params.sort }
     : undefined;
 
   const pageSize = 10;

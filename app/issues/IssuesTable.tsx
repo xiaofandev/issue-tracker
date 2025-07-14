@@ -1,13 +1,14 @@
-import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { Table, Text } from "@radix-ui/themes";
 import React from "react";
 import StatusBadge from "../component/StatusBadge";
 import { Issue } from "@prisma/client";
 import NextLink from "next/link";
+import { Sort } from "./page";
 
 interface Props {
   issues: Issue[];
-  searchParams: Promise<{ orderBy: keyof Issue }>;
+  searchParams: Promise<{ orderBy: keyof Issue; sort: Sort }>;
 }
 
 export const columns: { label: string; value: keyof Issue }[] = [
@@ -36,10 +37,25 @@ const IssuesTable = async ({ issues, searchParams }: Props) => {
         <Table.Row>
           {columns.map((column) => (
             <Table.ColumnHeaderCell key={column.value}>
-              <NextLink href={{ query: { ...params, orderBy: column.value } }}>
+              <NextLink
+                href={{
+                  query: {
+                    ...params,
+                    orderBy: column.value,
+                    sort: params.sort
+                      ? params.sort === "asc"
+                        ? "desc"
+                        : "asc"
+                      : "desc",
+                  },
+                }}
+              >
                 {column.label}
-                {column.value === params.orderBy && (
+                {column.value === params.orderBy && params.sort === "asc" && (
                   <ArrowUpIcon className="inline" />
+                )}
+                {column.value === params.orderBy && params.sort === "desc" && (
+                  <ArrowDownIcon className="inline" />
                 )}
               </NextLink>
             </Table.ColumnHeaderCell>
