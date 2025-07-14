@@ -5,6 +5,7 @@ import StatusBadge from "../component/StatusBadge";
 import { Issue } from "@prisma/client";
 import NextLink from "next/link";
 import { Sort } from "./page";
+import SortingButton from "./SortingButton";
 
 interface Props {
   issues: Issue[];
@@ -31,6 +32,11 @@ const IssuesTable = async ({ issues, searchParams }: Props) => {
   if (!issues || issues.length == 0) {
     return <Text>No result...</Text>;
   }
+
+  const toggleSortType = (sort: Sort): Sort => {
+    return sort === "asc" ? "desc" : "asc";
+  };
+
   return (
     <Table.Root variant="surface">
       <Table.Header>
@@ -42,20 +48,16 @@ const IssuesTable = async ({ issues, searchParams }: Props) => {
                   query: {
                     ...params,
                     orderBy: column.value,
-                    sort: params.sort
-                      ? params.sort === "asc"
-                        ? "desc"
-                        : "asc"
-                      : "desc",
+                    sort:
+                      column.value === params.orderBy
+                        ? toggleSortType(params.sort)
+                        : "desc",
                   },
                 }}
               >
                 {column.label}
-                {column.value === params.orderBy && params.sort === "asc" && (
-                  <ArrowUpIcon className="inline" />
-                )}
-                {column.value === params.orderBy && params.sort === "desc" && (
-                  <ArrowDownIcon className="inline" />
+                {column.value === params.orderBy && (
+                  <SortingButton searchParams={searchParams} />
                 )}
               </NextLink>
             </Table.ColumnHeaderCell>
