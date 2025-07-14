@@ -5,6 +5,9 @@ import LatestIssues from "./LatestIssues";
 import { Flex, Grid } from "@radix-ui/themes";
 import { Metadata } from "next";
 
+// disable prisma cache
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const open = await prisma.issue.count({ where: { status: "OPEN" } });
   const closed = await prisma.issue.count({ where: { status: "CLOSED" } });
