@@ -7,7 +7,7 @@ import NextLink from "next/link";
 
 interface Props {
   issues: Issue[];
-  searchParams: { orderBy: keyof Issue };
+  searchParams: Promise<{ orderBy: keyof Issue }>;
 }
 
 export const columns: { label: string; value: keyof Issue }[] = [
