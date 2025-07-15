@@ -20,13 +20,19 @@ interface Props {
 
 const IssuesPage = async ({ searchParams }: Props) => {
   const params = await searchParams;
+
   const statuses = Object.values(Status);
   const status = statuses.includes(params.status) ? params.status : undefined;
 
   const where = status ? { status } : undefined;
-  const orderBy = columns.map((column) => column.value).includes(params.orderBy)
-    ? { [params.orderBy]: params.sort }
-    : undefined;
+
+  const sort: Sort = params.sort ? params.sort : "desc";
+
+  const orderBy: { [x: string]: Sort } = columns
+    .map((column) => column.value)
+    .includes(params.orderBy)
+    ? { [params.orderBy]: sort }
+    : { id: "desc" }; // default order by id desc
 
   const pageSize = 10;
 
